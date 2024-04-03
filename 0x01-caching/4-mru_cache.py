@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""LRUCache module that inherits from BaseCaching
+"""MRUCache module that inherits from BaseCaching
 """
 
 from base_caching import BaseCaching
