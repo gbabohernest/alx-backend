@@ -3,6 +3,7 @@
 
 from flask import Flask, request, render_template, g
 from flask_babel import Babel
+from typing import Union
 
 app = Flask(__name__)
 babel = Babel(app)
@@ -49,7 +50,7 @@ def before_request():
     """Find a user if any and set it as a global on flask.g.user."""
     user_id = request.args.get('login_as')
     if user_id:
-        user = get_user(int(user_id))
+        user = get_user()
         if user:
             # Set user as a global on flask.g.user
             g.user = user
@@ -59,11 +60,12 @@ def before_request():
         g.user = None
 
 
-def get_user(user_id):
+def get_user() -> Union[dict, None]:
     """Get user from mock user table."""
     try:
-        user_id = int(user_id)
-        return users.get(user_id)
+        user_id = request.args.get('login_as')
+        if user_id:
+            return users.get(int(user_id))
     except ValueError:
         return None
 
