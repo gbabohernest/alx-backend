@@ -11,7 +11,9 @@ babel = Babel(app)
 
 
 class Config:
-    """Babel Configuration class.
+    """Babel Configuration class
+       with LANGUAGES, DEFAULT_LOCALE
+       and DEFAULT_TIMEZONE attributes
     """
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = 'en'
@@ -26,8 +28,7 @@ def get_locale():
     """Pick the best language translation
        to use for a request
     """
-    return request.accept_languages.best_match(
-        app.config['LANGUAGES'])
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
 @app.route('/', methods=['GET'], strict_slashes=True)
