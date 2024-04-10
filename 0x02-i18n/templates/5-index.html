@@ -6,10 +6,20 @@
 </head>
 <body>
     <h1>{{ gettext('home_header') }}</h1>
-    {% if g.user %}
-        <p>{{ gettext('logged_in_as', username=g.user.name) }}</p>
-    {% else %}
-        <p>{{ gettext('not_logged_in') }}</p>
-    {% endif %}
+    <p>
+        {% if g.user %}
+            {% if g.user['locale'] == 'fr' %}
+                {{ _('logged_in_as', username=g.user['name']) }}
+            {% else %}
+                {{ _('logged_in_as', username=g.user['name']) }}
+            {% endif %}
+        {% else %}
+            {% if babel.locale == 'fr' %}
+                {{ _('not_logged_in') }}
+            {% else %}
+                {{ _('not_logged_in') }}
+            {% endif %}
+        {% endif %}
+    </p>
 </body>
 </html>

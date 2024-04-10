@@ -2,7 +2,7 @@
 """Defines a mock logging in behavior"""
 
 from flask import Flask, request, render_template, g
-from flask_babel import Babel, gettext
+from flask_babel import Babel
 
 app = Flask(__name__)
 babel = Babel(app)
@@ -32,14 +32,31 @@ def get_locale():
     """Pick the best language translation
        to use for a request
     """
-    return request.accept_languages.best_match(app.config['LANGUAGES'])
+    # local param is in request args
+    if 'locale' in request.args:
+        requested_locale = request.args['locale']
+        # requested locale is supported?
+        if requested_locale in app.config['LANGUAGES']:
+            return requested_locale
+
+    # local param is not present | support, use Default behaviour
+    return request.accept_languages.best_match(
+        app.config['LANGUAGES'])
 
 
 @app.before_request
 def before_request():
     """Find a user if any and set it as a global on flask.g.user."""
-    login_as = request.args.get('login_as')
-    g.user = get_user(login_as) if login_as else None
+    user_id = request.args.get('login_as')
+    if user_id:
+        user = get_user(int(user_id))
+        if user:
+            # Set user as a global on flask.g.user
+            g.user = user
+        else:
+            g.user = None
+    else:
+        g.user = None
 
 
 def get_user(user_id):
