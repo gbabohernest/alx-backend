@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """This models creates a basic Flask App
-   that get locale from request.
+   that get locale from request..
 """
 
 from flask_babel import Babel
