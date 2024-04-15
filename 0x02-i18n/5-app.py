@@ -50,7 +50,7 @@ def before_request():
     """Find a user if any and set it as a global on flask.g.user."""
     user_id = request.args.get('login_as')
     if user_id:
-        user = get_user(int(user_id))
+        user = get_user()
         if user:
             # Set user as a global on flask.g.user
             g.user = user
@@ -62,24 +62,18 @@ def before_request():
 
 def get_user(user_id: int) -> Union[dict, None]:
     """Get user from mock user table."""
-    return users.get(user_id)
+    try:
+        user_id = request.args.get('login_as')
+        if user_id:
+            return users.get(int(user_id))
+    except ValueError:
+        return None
 
 
 @app.route('/', methods=['GET'], strict_slashes=True)
 def index():
     """Render the index page."""
-    if g.user:
-        if g.user['locale'] == 'fr':
-            message = ("logged_in_as", username=g.user['name'])
-        else:
-            message = ("logged_in_as", username=g.user['name'])
-    else:
-        if get_locale() == 'fr':
-            message = ("not_logged_in")
-        else:
-            message = ("not_logged_in")
-
-    return render_template('5-index.html', message=message)
+    return render_template('5-index.html')
 
 
 if __name__ == "__main__":
