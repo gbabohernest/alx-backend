@@ -2,7 +2,7 @@
 """Defines a mock logging in behavior"""
 
 from flask import Flask, request, render_template, g
-from flask_babel import Babel
+from flask_babel import Babel, _
 from typing import Union
 
 app = Flask(__name__)
@@ -50,7 +50,7 @@ def before_request():
     """Find a user if any and set it as a global on flask.g.user."""
     user_id = request.args.get('login_as')
     if user_id:
-        user = get_user()
+        user = get_user(int(user_id))
         if user:
             # Set user as a global on flask.g.user
             g.user = user
@@ -60,20 +60,26 @@ def before_request():
         g.user = None
 
 
-def get_user() -> Union[dict, None]:
+def get_user(user_id: int) -> Union[dict, None]:
     """Get user from mock user table."""
-    try:
-        user_id = request.args.get('login_as')
-        if user_id:
-            return users.get(int(user_id))
-    except ValueError:
-        return None
+    return users.get(user_id)
 
 
 @app.route('/', methods=['GET'], strict_slashes=True)
 def index():
     """Render the index page."""
-    return render_template('5-index.html')
+    if g.user:
+        if g.user['locale'] == 'fr':
+            message = _("logged_in_as", username=g.user['name'])
+        else:
+            message = _("logged_in_as", username=g.user['name'])
+    else:
+        if get_locale() == 'fr':
+            message = _("not_logged_in")
+        else:
+            message = _("not_logged_in")
+
+    return render_template('5-index.html', message=message)
 
 
 if __name__ == "__main__":
