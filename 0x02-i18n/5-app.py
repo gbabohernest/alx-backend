@@ -2,7 +2,7 @@
 """Defines a mock logging in behavior"""
 
 from flask import Flask, request, render_template, g
-from flask_babel import Babel, _
+from flask_babel import Babel
 from typing import Union
 
 app = Flask(__name__)
@@ -70,14 +70,14 @@ def index():
     """Render the index page."""
     if g.user:
         if g.user['locale'] == 'fr':
-            message = _("logged_in_as", username=g.user['name'])
+            message = ("logged_in_as", username=g.user['name'])
         else:
-            message = _("logged_in_as", username=g.user['name'])
+            message = ("logged_in_as", username=g.user['name'])
     else:
         if get_locale() == 'fr':
-            message = _("not_logged_in")
+            message = ("not_logged_in")
         else:
-            message = _("not_logged_in")
+            message = ("not_logged_in")
 
     return render_template('5-index.html', message=message)
 
