@@ -6,7 +6,7 @@ const queue = kue.createQueue({
 
 const blacklistedNumbers = ['4153518780', '4153518781'];
 
-const sendNotification = (phoneNumber, messsage, job, done) => {
+const sendNotification = (phoneNumber, message, job, done) => {
   job.progress(0, 100);
 
   if (blacklistedNumbers.includes(phoneNumber)) {
@@ -15,7 +15,7 @@ const sendNotification = (phoneNumber, messsage, job, done) => {
   } else {
     job.progress(50, 100); // Track progress to 50%
     console.log(
-      `Sending notification to ${phoneNumber}, with message: ${messsage}`
+      `Sending notification to ${phoneNumber}, with message: ${message}`
     );
     done();
   }
