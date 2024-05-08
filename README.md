@@ -12,3 +12,4 @@
 | [0x00-pagination](./0x00-pagination) | Pagination - **`Backend`** |
 | [0x01-caching](./0x01-caching)       | Caching - **`Backend`**    |
 | [0x02-i18n](./0x02-i18n/)            | Flaski18n - **`Backend`**  |
+| [0x03-queuing_system_in_js](./0x03-queuing_system_in_js) | Queuing System in JS - **`Back-end`** **`JavaScript`** **`ES6`** **`Redis`** **`NodeJS`** **`ExpressJS`** **`Kue`** |
